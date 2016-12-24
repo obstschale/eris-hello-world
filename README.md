@@ -6,6 +6,8 @@ This repo is a 101 tutorial for getting started with eris. I show you what to in
 
 The eris website already keeps good docs. So I try to keep this tutorial short on purpose because in most cases not all details are needed. I try to link to the appropriated pages in the case you need more information.
 
+You need to have basic understand of blockchains like bitcoin or ethereum and smart contracts. Otherwise this tutorial will not help you because I won't explain here.
+
 ## Table of Contents
 
 1. [Install Eris](#1-install-eris)
@@ -78,6 +80,102 @@ yum install -y eris-cli
 
 📝 [Eris Docs: Installing on Linux](https://monax.io/docs/tutorials/getting-started/#linux)
 
+
+### Test installation
+
+To see if eris is installed simply check the `eris` command.
+
+```sh
+eris version
+Eris CLI Version: 0.12.0
+```
+
 ## 2. Setup Chain
+
+### Prepare Docker
+
+To get started you need to start the docker container.
+
+```sh
+# Create docker container if not happend already
+docker-machine create -d virtualbox eris
+
+# list all available machines
+docker-machine ls                                                                                                 ~/Documents/University/TUB/11HTISE/eris-hello-world
+NAME   ACTIVE   DRIVER       STATE   URL   SWARM   DOCKER    ERRORS
+eris   -        virtualbox   Saved                 Unknown
+```
+
+You see with `docker-machine ls` I see all available machines. In this case I created already an eris machine. Let's start it.
+
+```sh
+docker-machine start eris
+Starting "eris"...
+
+docker-machine ls
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
+eris   *        virtualbox   Running   tcp://192.168.99.100:2376           v1.12.3
+```
+
+Before we proceed make sure to set the env. This can also be added to your `.bashrc` to run everytime.
+
+```sh
+docker-machine env eris
+```
+
+### Keys
+
+Before we create any chain let's create some keys for it.
+
+```sh
+# Start eris' keys service
+eris services start keys
+
+# Generate keys
+eris keys gen
+FBB4D91C8CC0C1E27D116ADF2DDB99F9F90DC551
+
+# Export the new key
+eris keys export FBB4D91C8CC0C1E27D116ADF2DDB99F9F90DC551
+
+# See key data in dir
+ls ~/.eris/keys/data
+FBB4D91C8CC0C1E27D116ADF2DDB99F9F90DC551
+
+# List all keys
+eris keys ls
+```
+
+
+### Create Blockchain with Eris
+
+Eris will create a folder in `~/.eris`. This directory holds all data for your chains, keys, contracts, etc.
+
+```sh
+eris chains make foo_chain
+eris chains start foo_chain
+```
+
+Eris will not output a lot of information is very quiet by default. To see that your chain is created use `eris ls`. This command will list all services and chains.
+
+```sh
+eris ls                               
+SERVICE       ON     CONTAINER ID     DATA CONTAINER
+keys          *      0397ec6e0a       aa80e21b99
+
+CHAIN         ON     CONTAINER ID     DATA CONTAINER
+foo_chain     *      837996b5b3       7154bd5686
+```
+
+### Logs
+
+You can find logs for your chain with the logs command
+
+```sh
+eris chains logs foo_chain
+```
+
+Now all is set. You created keys and a new chain. Good work!
+
 
 ## 3. Write Contract
