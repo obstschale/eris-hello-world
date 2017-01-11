@@ -159,7 +159,7 @@ eris chains start foo_chain
 Eris will not output a lot of information is very quiet by default. To see that your chain is created use `eris ls`. This command will list all services and chains.
 
 ```sh
-eris ls                               
+eris ls
 SERVICE       ON     CONTAINER ID     DATA CONTAINER
 keys          *      0397ec6e0a       aa80e21b99
 
@@ -179,3 +179,31 @@ Now all is set. You created keys and a new chain. Good work!
 
 
 ## 3. Write Contract
+
+Smart Contracts are written in Solidity. A sample contract can be found in `contracts/SeminarManager.sol` and `contracts/Seminar.sol`.
+
+The file `epm.yaml` contains information about the contracts. This file is used during deployment so eris knows what to do. This is a simple one with only one action: deploy the contract.
+
+More complex scenarios a possible. E.g. you could defines specific calls to the contract and even tests. The order of the defined jobs are handles in the sequence in which they are listed.
+
+### Deploy the contract
+
+In step 2, we already created a chain called `foo_chain`, which is stored under `~/.eris/chains/foo_chain`. To deploy a contract we need an address, which has the permission to deploy one.
+
+The file `~/.eris/chains/foo_chain/addresses.csv` holds such an address.
+
+```sh
+addr=$(cat ~/.eris/chains/foo_chain/addresses.csv | grep foo_chain_full_000 | cut -d ',' -f 1)
+
+echo $addr
+AA45292750908DC73A7EB54BDE748327AD3167FF # Should look something like this.
+```
+
+Now we are ready:
+
+```sh
+cd contracts/
+eris pkgs do -c foo_chain -a $addr
+```
+
+That's all. The contract is on the chain.

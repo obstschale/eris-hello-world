@@ -1,0 +1,8 @@
+jobs:
+
+- name: SeminarManager
+  job:
+    deploy:
+      contract: SeminarManager.sol
+      instance: all
+      wait: true
