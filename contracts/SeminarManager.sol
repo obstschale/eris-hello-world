@@ -2,11 +2,11 @@
 import "Seminar.sol";
 
 /**
- * Contract to create and store deals
+ * Contract to create and store seminars
  */
 contract SeminarManager {
 
-    event NewSeminar(address contractAddress, bytes32 id, bytes32 buyer, bytes32 seller, uint amount);
+    event NewSeminar(address contractAddress, bytes32 id, bytes32 name, bytes32 member);
 
     // main map
     mapping(bytes32 => AddressElement) map;
@@ -121,12 +121,12 @@ contract SeminarManager {
     }
 
     /**
-     * Adds a new deal with the specified attributes
+     * Adds a new seminar with the specified attributes
      */
-    function addSeminar(bytes32 _id, bytes32 _buyer, bytes32 _seller, uint _amount) returns (bool) {
-        Seminar deal = new Seminar(_id, _buyer, _seller, _amount);
-        insert(_id, deal);
-        NewSeminar(deal, deal.id(), deal.buyer(), deal.seller(), deal.amount());
+    function addSeminar(bytes32 _id, bytes32 _name, bytes32 _member) returns (bool) {
+        Seminar seminar = new Seminar(_id, _name, _member);
+        insert(_id, seminar);
+        NewSeminar(seminar, seminar.id(), seminar.name(), seminar.member());
         return true;
     }
 

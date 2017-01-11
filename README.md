@@ -13,6 +13,7 @@ You need to have basic understand of blockchains like bitcoin or ethereum and sm
 1. [Install Eris](#1-install-eris)
 2. [Setup Chain](#2-setup-chain)
 3. [Write Contract](#3-write-contract)
+4. [Application](#4-application)
 
 ## 1. Install Eris
 
@@ -207,3 +208,30 @@ eris pkgs do -c foo_chain -a $addr
 ```
 
 That's all. The contract is on the chain.
+
+## 4. Application
+
+Last but not least, a NodeJS app helps us to interact with the new contract. First off all we need to install the node dependencies.
+
+```sh
+npm install
+```
+
+*!!Manual Step!!* Secondly, you need to copy'n'paste two values into `js/libs/hello-chain.js`. The first value is the address you used beforehand while deploying the contract. The second is the path to the `accounts.json` file of your chain your using.
+
+Now you can start the app.
+
+```sh
+node app.js
+```
+
+### Endpoints
+
+While the app runs, the following REST Endpoints are available on `http://localhost:3080`
+
+`GET /seminars`: List all seminars.
+
+`GET /seminar/:id`: List one seminar.
+
+`POST /seminars`: Body: `{"id": "234232", "buyer": "Mike", "seller": "Laura", "amount": 23984}`: Save new seminar.
+
